@@ -1,7 +1,13 @@
-
-from pyspark import SparkContext, SparkConf
-if __name__ == "__main__":
-    sc = SparkContext("local", "PySpark Word Count")
-    lines = sc.textFile("txt")
-    counts = lines.flatMap(lambda line: line.split(" ")).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
-    print(counts.collect())
+import os
+import time
+from collections import Counter
+start = time.time()
+all_files = os.listdir(os.curdir)
+counter = Counter()
+for filename in all_files:
+    if filename.endswith(".txt"):
+        file = open(filename)
+        counter += Counter(file.read().split())
+print(counter)
+end = time.time()
+print(end - start)
